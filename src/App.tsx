@@ -1,15 +1,34 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Home from "@/components/home/Home";
+import Home from "@/components/home/Home"
+import { useTheme } from "next-themes"
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const { theme, setTheme } = useTheme()
   return (
     <>
-    <Home/>
+      <Home />
+      <button
+        className="btn border p-[10px] m-[10px]"
+        onClick={() => setTheme("light")}
+      >
+        Light
+      </button>
+      <button
+        className="btn border p-[10px] m-[10px]"
+        onClick={() => setTheme("dark")}
+      >
+        Dark
+      </button>
+      <button
+        className="btn border p-[10px] m-[10px]"
+        onClick={() => setTheme("system")}
+      >
+        System
+      </button>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -31,7 +50,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
 export default App
