@@ -1,2 +1,4 @@
-import { env } from './config/env'
-export { env }
+import { env } from './config'
+import { test } from "./helper";
+
+export { env, test };
