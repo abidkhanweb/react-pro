@@ -1,16 +1,46 @@
-export const ROUTES = {
-  ROOT: "/",
+export interface MenuNode {
+  label: string;
+  path: string;
+  component?: any;
+  children?: MenuNode[];
+}
 
-  ORDERS: {
-    ROOT: "/orders",
-    LIST: "/orders",
-    DETAILS: "/orders/:orderId",
-    CREATE: "/orders/create",
+export const MENU: MenuNode[] = [
+  {
+    label: "Dashboard",
+    path: "/",
+    children: [
+      {
+        label: "Dashboard",
+        path: "",
+        component: "Dashboard",
+      },
+    ],
   },
-
-  ANALYTICS: {
-    ROOT: "/analytics",
-    OVERVIEW: "/analytics/overview",
-    REPORTS: "/analytics/reports",
+  {
+    label: "Orchestrator",
+    path: "/orchestrator",
+    children: [
+      {
+        label: "Server Management",
+        path: "server-management",
+        component: "ServerManagement",
+      },
+      {
+        label: "Users & Authentication",
+        path: "users",
+        component: "Users",
+      },
+      {
+        label: "Backup",
+        path: "backup",
+        component: "Backup",
+      },
+      {
+        label: "Setup",
+        path: "setup",
+        component: "Setup",
+      },
+    ],
   },
-} as const
+];
