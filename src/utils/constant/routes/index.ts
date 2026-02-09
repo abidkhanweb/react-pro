@@ -1,8 +1,8 @@
 export interface MenuNode {
-  label: string;
-  path: string;
-  component?: any;
-  children?: MenuNode[];
+  label: string
+  path: string
+  component?: any
+  children?: MenuNode[]
 }
 
 export const MENU: MenuNode[] = [
@@ -40,7 +40,7 @@ export const MENU: MenuNode[] = [
         label: "Setup",
         path: "setup",
         component: "Setup",
-      },
-    ],
-  },
-];
+      }
+    ]
+  }
+]
