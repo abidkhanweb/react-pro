@@ -1,0 +1,1 @@
+export { getOrders, deleteOrder} from "./orders.service";

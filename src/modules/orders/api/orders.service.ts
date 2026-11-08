@@ -1,6 +1,6 @@
 import { apiClient, API_ENDPOINTS } from "@/services/api"
 import type { PaginatedResponse } from "@/services/api"
-import type { Order } from "./orders.types"
+import type { Order } from "../orders.types"
 
 export const getOrders = async (params: { page: number, limit: number }) => {
   const response = await apiClient.get<PaginatedResponse<Order>>(

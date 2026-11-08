@@ -2,12 +2,18 @@ export const ordersKeys = {
   all: ["orders"] as const,
 
   lists: () => [...ordersKeys.all, "list"] as const,
+
   list: (params: Record<string, unknown>) =>
     [...ordersKeys.lists(), params] as const,
 
   details: () => [...ordersKeys.all, "detail"] as const,
+
   detail: (id: string) => [...ordersKeys.details(), id] as const,
-}
+
+  statistics: () => [...ordersKeys.all, "statistics"] as const,
+
+  dashboard: () => [...ordersKeys.all, "dashboard"] as const,
+};
 
 //# How to use keys
 //# useQuery({

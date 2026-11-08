@@ -4,11 +4,9 @@ import { BrowserRouter } from "react-router-dom"
 import { ThemeProviders, QueryProvider } from '@/providers/index'
 import { ErrorBoundary } from "@/components/system/ErrorBoundary.tsx"
 import { AppFallback } from "@/components/system/AppFallback.tsx";
-
 import App from './App.tsx'
 import { Toaster } from "@/components/ui/toaster";
 import './index.css'
-
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -6,8 +6,8 @@ import {
   keepPreviousData,
 } from "@tanstack/react-query";
 import { ordersKeys } from "@/services/query-keys"
-import { getOrders, deleteOrder as apiDeleteOrder } from "../orders.service"
-import type { Order } from "../orders.types"
+import { getOrders, deleteOrder as apiDeleteOrder } from "../api/orders.service"
+// import type { Order } from "../orders.types"
 
 export function useOrders(initialPage = 1, initialLimit = 10) {
   const [page, setPage] = useState(initialPage)
@@ -16,8 +16,8 @@ export function useOrders(initialPage = 1, initialLimit = 10) {
   const qc = useQueryClient()
 
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ordersKeys.list({ page, limit }),
     queryFn: () => getOrders({ page, limit }),
+    queryKey: ordersKeys.list({ page, limit }),
     placeholderData: keepPreviousData,
   });
 
@@ -30,7 +30,7 @@ export function useOrders(initialPage = 1, initialLimit = 10) {
   });
 
   return {
-    orders: data?.data ?? [] as Order[],
+    orders: data?.data ?? [],
     total: data?.total ?? 0,
     page,
     limit,

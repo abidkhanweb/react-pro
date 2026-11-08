@@ -5,6 +5,7 @@ import Layout from "@/components/featured/layout/Layout";
 import NotFound from "@/components/common/not-found/NotFound";
 import { MENU } from '@/utils/index'
 import { useEffect } from "react";
+import dashboardLogo from '@/assets/img/icons/dashboard-logo.svg'
 
 function App() {
   const { theme, setTheme } = useTheme()
@@ -15,6 +16,7 @@ function App() {
   },[])
   return (
     <>
+      <img src={dashboardLogo} alt="adad" width={100}></img>
       <Routes>
         {MENU.map((main) => (
           <Route key={main.path} path={main.path} element={<Layout />}>
