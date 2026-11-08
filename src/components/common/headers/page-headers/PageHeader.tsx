@@ -1,14 +1,11 @@
 // src/components/page-header/PageHeader.tsx
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/utils/cn"; // utility to combine class names
-import { Plus } from "lucide-react"; // example icon
+import type { ReactNode } from "react";
 
 type Props = {
   title: string;
   subtitle?: string;
-  actions?: React.ReactNode;
+  actions?: ReactNode;
 };
 
 export function PageHeader({ title, subtitle, actions }: Props) {

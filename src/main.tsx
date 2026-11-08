@@ -8,7 +8,12 @@ import App from './App.tsx'
 import { Toaster } from "@/components/ui/toaster";
 import './index.css'
 
-createRoot(document.getElementById("root")!).render(
+async function startApp() {
+  if (import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCKS === "true") {
+    const { worker } = await import("./mocks/browser");
+    await worker.start({ onUnhandledRequest: "bypass" });
+  }
+  createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
       <Suspense fallback={<AppFallback />}>
@@ -24,3 +29,9 @@ createRoot(document.getElementById("root")!).render(
     </ErrorBoundary>
   </StrictMode>,
 );
+}
+
+void startApp().catch((error: unknown) => {
+  console.error("Application startup failed", error);
+  document.getElementById("root")!.textContent = "Could not start the application. Please reload and try again.";
+});

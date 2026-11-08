@@ -1,3 +1,5 @@
 export { ordersKeys } from "./orders.keys"
 export { productsKeys } from "./products.keys"
 export { analyticsKeys } from "./analytics.keys"
+export { usersKeys } from "./users.keys"
+export { dashboardKeys } from "./dashboard.keys"

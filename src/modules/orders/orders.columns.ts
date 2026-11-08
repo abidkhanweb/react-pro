@@ -1,25 +1,27 @@
-import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { Order } from "./orders.types";
 
-// Use a broad value type to avoid accessor value-type incompatibilities
-// createColumnHelper only expects the row data type as a generic
-const columnHelper = createColumnHelper<Order>();
-
-export const ordersColumns : ColumnDef<Order, any>[] = [
-  columnHelper.accessor("id", {
+export const ordersColumns: ColumnDef<Order>[] = [
+  {
+    accessorKey: "id",
     header: "Order ID",
-  }),
-  columnHelper.accessor("customerName", {
+  },
+  {
+    accessorKey: "customerName",
     header: "Customer",
-  }),
-  columnHelper.accessor("status", {
+  },
+  {
+    accessorKey: "status",
     header: "Status",
-  }),
-  columnHelper.accessor("totalAmount", {
+  },
+  {
+    accessorKey: "totalAmount",
     header: "Amount",
-    cell: (info) => `$${info.getValue()}`, // formatted value
-  }),
-] ;
+    cell: ({ row }) => new Intl.NumberFormat("en-IN", {
+      style: "currency", currency: "INR",
+    }).format(row.original.totalAmount),
+  },
+];
 
 //# How to use in component
 //# import { DataTable } from "@/components/table";

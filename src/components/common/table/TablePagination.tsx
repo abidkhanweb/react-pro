@@ -1,8 +1,10 @@
-type Props = {
-  table: any;
+import type { Table } from "@tanstack/react-table";
+
+type Props<T> = {
+  table: Table<T>;
 };
 
-export function TablePagination({ table }: Props) {
+export function TablePagination<T>({ table }: Props<T>) {
   return (
     <div className="flex items-center gap-2">
       <button
