@@ -1,6 +1,5 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
-import { OctagonAlert, Plus, Trash, Settings } from "lucide-react";
+import { OctagonAlert } from "lucide-react";
 import { type EmptyStateProps as Props } from "./empty-state.types"
 export function EmptyState({
   title = "No data available",

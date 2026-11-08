@@ -1,1 +1,1 @@
-export { getOrders, deleteOrder} from "./orders.service";
+export { getOrders, deleteOrder, createOrder } from "./orders.service";

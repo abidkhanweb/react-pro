@@ -12,6 +12,8 @@ type FormInputProps<T extends FieldValues> = {
   disabled?: boolean;
   required?: boolean;
   className?: string;
+  min?: number;
+  step?: number | string;
 };
 
 export function FormInput<T extends FieldValues>({
@@ -23,6 +25,8 @@ export function FormInput<T extends FieldValues>({
   disabled,
   required,
   className,
+  min,
+  step,
 }: FormInputProps<T>) {
   return (
     <FormFieldWrapper<T>
@@ -40,6 +44,8 @@ export function FormInput<T extends FieldValues>({
             placeholder={placeholder}
             disabled={disabled}
             required={required}
+            min={min}
+            step={step}
           />
         </FormControl>
       )}

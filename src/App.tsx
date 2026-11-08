@@ -1,27 +1,19 @@
 import { Routes, Route } from "react-router-dom"
-import { useTheme } from "next-themes"
 import LazyComponentsRegistery from "@/components/system/LazyComponentsRegistery";
 import Layout from "@/components/featured/layout/Layout";
 import NotFound from "@/components/common/not-found/NotFound";
 import { MENU } from '@/utils/index'
-import { useEffect } from "react";
 import dashboardLogo from '@/assets/img/icons/dashboard-logo.svg'
 
 function App() {
-  const { theme, setTheme } = useTheme()
-
-  useEffect(()=>{
-    console.log(theme)
-    setTheme("light")
-  },[])
   return (
     <>
-      <img src={dashboardLogo} alt="adad" width={100}></img>
+      <img src={dashboardLogo} alt="Commerce Admin" width={100} />
       <Routes>
         {MENU.map((main) => (
           <Route key={main.path} path={main.path} element={<Layout />}>
             {main.children?.map((sub) => {
-              const Component = LazyComponentsRegistery[sub?.component];
+              const Component = sub.component ? LazyComponentsRegistery[sub.component] : undefined;
 
               return (
                 <Route

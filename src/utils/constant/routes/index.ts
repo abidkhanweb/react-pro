@@ -1,7 +1,7 @@
 export interface MenuNode {
   label: string
   path: string
-  component?: any
+  component?: string
   children?: MenuNode[]
 }
 

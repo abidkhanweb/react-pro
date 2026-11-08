@@ -1,11 +1,10 @@
 import { useState } from "react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query"
 import { productsKeys } from "@/services/query-keys"
 import {
   getProducts,
   deleteProduct as apiDeleteProduct,
 } from "../products.service"
-import type { Product } from "../products.types"
 
 export function useProducts(initialPage = 1, initialLimit = 10) {
   const [page, setPage] = useState(initialPage)
@@ -13,15 +12,16 @@ export function useProducts(initialPage = 1, initialLimit = 10) {
 
   const qc = useQueryClient()
 
-  const { data, isLoading, isError, refetch } = useQuery(
-    productsKeys.list({ page, limit }),
-    () => getProducts({ page, limit }),
-    { keepPreviousData: true },
-  )
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: productsKeys.list({ page, limit }),
+    queryFn: () => getProducts({ page, limit }),
+    placeholderData: keepPreviousData,
+  })
 
-  const { mutateAsync: deleteProduct } = useMutation(apiDeleteProduct, {
+  const { mutateAsync: deleteProduct } = useMutation({
+    mutationFn: apiDeleteProduct,
     onSuccess: () => {
-      qc.invalidateQueries(productsKeys.all)
+      return qc.invalidateQueries({ queryKey: productsKeys.all })
     },
   })
 

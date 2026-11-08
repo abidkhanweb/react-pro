@@ -1,4 +1,4 @@
-import type { AxiosError } from "axios"
+import { isAxiosError } from "axios"
 import type { ApiErrorResponse } from "./http.types"
 
 export class ApiError extends Error {
@@ -18,8 +18,8 @@ export class ApiError extends Error {
 }
 
 export const normalizeApiError = (error: unknown): ApiError => {
-  if ((error as AxiosError).isAxiosError) {
-    const axiosError = error as AxiosError<ApiErrorResponse>
+  if (isAxiosError<ApiErrorResponse>(error)) {
+    const axiosError = error
 
     return new ApiError(
       axiosError.response?.data?.message || "Something went wrong",

@@ -3,7 +3,7 @@ import type { ChartPoint } from "@/components/common/charts/types";
 // normalize API data that might have keys like
 // { date, totalRevenue } → { label, value }
 export function mapToChartPoints(
-  arr: any[],
+  arr: Record<string, unknown>[],
   labelKey: string,
   valueKey: string,
 ): ChartPoint[] {
@@ -15,7 +15,7 @@ export function mapToChartPoints(
 
 // group aggregator example if needed
 export function groupAndSum(
-  arr: any[],
+  arr: Record<string, unknown>[],
   groupByKey: string,
   valueKey: string,
 ): ChartPoint[] {

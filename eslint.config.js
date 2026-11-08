@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'public/mockServiceWorker.js']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -18,6 +18,14 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+    },
+  },
+  {
+    files: ['src/components/ui/{button,badge,form}.tsx'],
+    rules: {
+      'react-refresh/only-export-components': ['error', {
+        allowExportNames: ['buttonVariants', 'badgeVariants', 'useFormField', 'Form'],
+      }],
     },
   },
 ])

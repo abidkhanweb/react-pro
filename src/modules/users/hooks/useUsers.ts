@@ -1,8 +1,7 @@
 import { useState } from "react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query"
 import { usersKeys } from "@/services/query-keys"
 import { getUsers, deleteUser as apiDeleteUser } from "../users.service"
-import type { User } from "../users.types"
 
 export function useUsers(initialPage = 1, initialLimit = 10) {
   const [page, setPage] = useState(initialPage)
@@ -10,15 +9,16 @@ export function useUsers(initialPage = 1, initialLimit = 10) {
 
   const qc = useQueryClient()
 
-  const { data, isLoading, isError, refetch } = useQuery(
-    usersKeys.list({ page, limit }),
-    () => getUsers({ page, limit }),
-    { keepPreviousData: true },
-  )
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: usersKeys.list({ page, limit }),
+    queryFn: () => getUsers({ page, limit }),
+    placeholderData: keepPreviousData,
+  })
 
-  const { mutateAsync: deleteUser } = useMutation(apiDeleteUser, {
+  const { mutateAsync: deleteUser } = useMutation({
+    mutationFn: apiDeleteUser,
     onSuccess: () => {
-      qc.invalidateQueries(usersKeys.all)
+      return qc.invalidateQueries({ queryKey: usersKeys.all })
     },
   })
 

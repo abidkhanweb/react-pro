@@ -2,7 +2,9 @@ import axios from "axios"
 import { normalizeApiError } from "./http.errors"
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCKS === "true"
+    ? "/api"
+    : import.meta.env.VITE_API_BASE_URL || "/api",
   headers: {
     "Content-Type": "application/json",
   },

@@ -4,7 +4,7 @@ import { lazy } from "react";
 type ComponentKey = string;
 type LazyComponentMap = Record<
   ComponentKey,
-  React.LazyExoticComponent<React.ComponentType<any>>
+  React.LazyExoticComponent<React.ComponentType>
 >
 
 const LazyComponentsRegistery: LazyComponentMap = {
