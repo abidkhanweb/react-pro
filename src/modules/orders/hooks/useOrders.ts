@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ordersKeys } from "@/services/query-keys";
+import { dashboardKeys, ordersKeys } from "@/services/query-keys";
 import { getOrders, deleteOrder } from "../api";
 import type { OrderFilters } from "../orders.types";
 
@@ -21,7 +21,10 @@ export function useOrders(initialPage = 1, initialLimit = 10) {
     onSuccess: async () => {
       const lastPage = Math.max(1, Math.ceil(((query.data?.total ?? 1) - 1) / params.limit));
       setParams((current) => ({ ...current, page: Math.min(current.page, lastPage) }));
-      await queryClient.invalidateQueries({ queryKey: ordersKeys.all });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ordersKeys.all }),
+        queryClient.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+      ]);
     },
   });
 

@@ -3,14 +3,15 @@ import { dashboardKeys } from "@/services/query-keys"
 import { getDashboardStats } from "../dashboard.service"
 
 export function useDashboard() {
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isPending, isFetching, isError, refetch } = useQuery({
     queryKey: dashboardKeys.stats(),
-    queryFn: getDashboardStats,
+    queryFn: ({ signal }) => getDashboardStats(signal),
   })
 
   return {
     stats: data ?? null,
-    isLoading,
+    isLoading: isPending,
+    isFetching,
     isError,
     refetch,
   }

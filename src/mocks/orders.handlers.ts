@@ -7,6 +7,8 @@ import { updateOrderPayloadSchema } from "@/modules/orders/schemas/update-order.
 // shortcut: demo data lives in memory; replace handlers with the persistent backend before production.
 const orders: Order[] = [];
 
+export const getMockOrders = () => orders.map((order) => ({ ...order }));
+
 export function resetMockOrders(seed: Order[] = []) {
   orders.splice(0, orders.length, ...seed.map((order) => ({ ...order })));
 }

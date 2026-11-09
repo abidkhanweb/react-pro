@@ -14,7 +14,7 @@ export function ChartContainer({ title, children }: Props) {
           {title}
         </h3>
       )}
-      <div className="w-full h-72 flex justify-center items-center">
+      <div className="w-full min-w-0 h-[300px] flex justify-center items-center">
         {children}
       </div>
     </div>
