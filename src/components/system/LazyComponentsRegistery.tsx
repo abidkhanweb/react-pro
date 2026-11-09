@@ -1,20 +1,13 @@
+import { lazy, type ComponentType, type LazyExoticComponent } from "react";
+import type { AdminPageKey } from "@/utils/constant/routes";
 
-import { lazy } from "react";
-
-type ComponentKey = string;
-type LazyComponentMap = Record<
-  ComponentKey,
-  React.LazyExoticComponent<React.ComponentType>
->
-
-const LazyComponentsRegistery: LazyComponentMap = {
+const LazyComponentsRegistery: Record<AdminPageKey, LazyExoticComponent<ComponentType>> = {
   Dashboard: lazy(() => import("@/components/featured/dashboard/Dashboard")),
-//   Users: lazy(() => import("./pages/Users")),
-//   Backup: lazy(() => import("./pages/Backup")),
-//   Setup: lazy(() => import("./pages/Setup")),
-}
+  Orders: lazy(() => import("@/modules/orders/orders.page")),
+  Products: lazy(() => import("@/modules/products/products.page")),
+  Users: lazy(() => import("@/modules/users/users.page")),
+  Analytics: lazy(() => import("@/modules/analytics/analytics.page")),
+  Settings: lazy(() => import("@/modules/settings/settings.page")),
+};
 
-export default LazyComponentsRegistery 
-
-
-
+export default LazyComponentsRegistery;
