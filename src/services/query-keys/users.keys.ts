@@ -1,5 +1,6 @@
 export const usersKeys = {
   all: ["users"] as const,
-  list: (params: { page: number; limit: number }) =>
+  list: (params: Record<string, unknown>) =>
     ["users", "list", params] as const,
+  detail: (id: string) => ["users", "detail", id] as const,
 };

@@ -15,6 +15,10 @@ vi.mock("@/modules/products/components/ProductsTable", () => ({
   ProductsTable: () => <p>Product list is isolated from network requests in shell tests.</p>,
 }));
 
+vi.mock("@/modules/users/components/UsersTable", () => ({
+  UsersTable: () => <p>User list is isolated from network requests in shell tests.</p>,
+}));
+
 beforeAll(() => {
   configure({ asyncUtilTimeout: 5000 });
   // Node exposes its own storage API; components should use the jsdom browser storage in these tests.
