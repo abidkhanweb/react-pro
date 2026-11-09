@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { skipToken, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { usersKeys } from "@/services/query-keys";
+import { dashboardKeys, usersKeys } from "@/services/query-keys";
 import { createUser, deleteUser, getUser, getUsers, updateUser } from "../api";
 import type { UserFilters } from "../users.types";
 import type { UserPayload } from "../schemas/user.schema";
@@ -19,7 +19,10 @@ export function useUsers(initialPage = 1, initialLimit = 10) {
     onSuccess: async () => {
       const lastPage = Math.max(1, Math.ceil(((query.data?.total ?? 1) - 1) / params.limit));
       setParams((current) => ({ ...current, page: Math.min(current.page, lastPage) }));
-      await client.invalidateQueries({ queryKey: usersKeys.all });
+      await Promise.all([
+        client.invalidateQueries({ queryKey: usersKeys.all }),
+        client.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+      ]);
     },
   });
 
@@ -45,6 +48,9 @@ export function useSaveUser() {
   return useMutation({
     mutationFn: ({ id, payload }: { id?: string; payload: UserPayload }) =>
       id ? updateUser(id, payload) : createUser(payload),
-    onSuccess: () => client.invalidateQueries({ queryKey: usersKeys.all }),
+    onSuccess: () => Promise.all([
+      client.invalidateQueries({ queryKey: usersKeys.all }),
+      client.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+    ]),
   });
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { skipToken, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { productsKeys } from "@/services/query-keys";
+import { dashboardKeys, productsKeys } from "@/services/query-keys";
 import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from "../api";
 import type { ProductFilters } from "../products.types";
 import type { ProductPayload } from "../schemas/product.schema";
@@ -20,7 +20,10 @@ export function useProducts(initialPage = 1, initialLimit = 10) {
     onSuccess: async () => {
       const lastPage = Math.max(1, Math.ceil(((query.data?.total ?? 1) - 1) / params.limit));
       setParams((current) => ({ ...current, page: Math.min(current.page, lastPage) }));
-      await client.invalidateQueries({ queryKey: productsKeys.all });
+      await Promise.all([
+        client.invalidateQueries({ queryKey: productsKeys.all }),
+        client.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+      ]);
     },
   });
 
@@ -47,6 +50,9 @@ export function useSaveProduct() {
   return useMutation({
     mutationFn: ({ id, payload }: { id?: string; payload: ProductPayload }) =>
       id ? updateProduct(id, payload) : createProduct(payload),
-    onSuccess: () => client.invalidateQueries({ queryKey: productsKeys.all }),
+    onSuccess: () => Promise.all([
+      client.invalidateQueries({ queryKey: productsKeys.all }),
+      client.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+    ]),
   });
 }

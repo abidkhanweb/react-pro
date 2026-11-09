@@ -6,6 +6,8 @@ import type { Product } from "@/modules/products/products.types";
 // shortcut: demo products live in memory; persistent catalog storage belongs to the backend milestone.
 const products: Product[] = [];
 
+export const getMockProducts = () => products.map((product) => ({ ...product }));
+
 export function resetMockProducts(seed: Product[] = []) {
   products.splice(0, products.length, ...seed.map((product) => ({ ...product })));
 }

@@ -6,6 +6,8 @@ import type { User } from "@/modules/users/users.types";
 // shortcut: profiles are temporary demo records; account security and durable storage require the real backend.
 const users: User[] = [];
 
+export const getMockUserCount = () => users.length;
+
 export function resetMockUsers(seed: User[] = []) {
   users.splice(0, users.length, ...seed.map((user) => ({ ...user })));
 }

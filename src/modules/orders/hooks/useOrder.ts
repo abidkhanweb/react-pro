@@ -1,5 +1,5 @@
 import { skipToken, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ordersKeys } from "@/services/query-keys";
+import { dashboardKeys, ordersKeys } from "@/services/query-keys";
 import { getOrder, updateOrder } from "../api";
 import type { CreateOrderPayload } from "../schemas/create-order.schema";
 
@@ -14,6 +14,9 @@ export function useUpdateOrder() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: CreateOrderPayload }) => updateOrder(id, payload),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ordersKeys.all }),
+    onSuccess: () => Promise.all([
+      queryClient.invalidateQueries({ queryKey: ordersKeys.all }),
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+    ]),
   });
 }
