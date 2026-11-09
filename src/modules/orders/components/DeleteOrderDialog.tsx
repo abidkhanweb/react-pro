@@ -1,69 +1,32 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import type { Order } from "../orders.types";
 
 type Props = {
-  open: boolean;
+  order: Order;
+  pending: boolean;
+  error?: string;
   onClose: () => void;
   onConfirm: () => void;
+  onReturnFocus: () => void;
 };
 
-export function DeleteOrderDialog({ open, onClose, onConfirm }: Props) {
+export function DeleteOrderDialog({ order, pending, error, onClose, onConfirm, onReturnFocus }: Props) {
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open onOpenChange={(open) => { if (!open && !pending) onClose(); }}>
+      <DialogContent
+        onCloseAutoFocus={(event) => { event.preventDefault(); onReturnFocus(); }}
+        onEscapeKeyDown={(event) => { if (pending) event.preventDefault(); }}>
         <DialogHeader>
-          <DialogTitle>Delete Order</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to delete this order?
-          </DialogDescription>
+          <DialogTitle>Delete order</DialogTitle>
+          <DialogDescription>Delete order {order.id} for {order.customerName}? This cannot be undone.</DialogDescription>
         </DialogHeader>
-
+        {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button variant="destructive" onClick={onConfirm}>
-            Delete
-          </Button>
+          <Button variant="outline" disabled={pending} onClick={onClose}>Cancel</Button>
+          <Button variant="destructive" disabled={pending} onClick={onConfirm}>{pending ? "Deleting..." : "Delete order"}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
-
-// ## How to use
-// const [open, setOpen] = useState(false);
-
-// <>
-//   <Button onClick={() => setOpen(true)}>Delete</Button>
-
-//   <DeleteOrderDialog
-//     open={open}
-//     onClose={() => setOpen(false)}
-//     onConfirm={() => {
-//       // delete API
-//       setOpen(false);
-//     }}
-//   />
-// </>;
-
-
-{/* <ConfirmDialog
-  open={open}
-  title="Delete Order"
-  description="Are you sure you want to delete this order?"
-  confirmText="Delete"
-  cancelText="Cancel"
-  confirmVariant="destructive"
-  onCancel={onClose}
-  onConfirm={onConfirm}
-/>; */}

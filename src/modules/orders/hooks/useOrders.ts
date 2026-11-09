@@ -1,48 +1,41 @@
-import { useState } from "react"
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  keepPreviousData,
-} from "@tanstack/react-query";
-import { ordersKeys } from "@/services/query-keys"
-import { getOrders, deleteOrder as apiDeleteOrder } from "../api/orders.service"
-// import type { Order } from "../orders.types"
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { ordersKeys } from "@/services/query-keys";
+import { getOrders, deleteOrder } from "../api";
+import type { OrderFilters } from "../orders.types";
 
 export function useOrders(initialPage = 1, initialLimit = 10) {
-  const [page, setPage] = useState(initialPage)
-  const [limit, setLimit] = useState(initialLimit)
-
-  const qc = useQueryClient()
-
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryFn: () => getOrders({ page, limit }),
-    queryKey: ordersKeys.list({ page, limit }),
-    placeholderData: keepPreviousData,
+  const [params, setParams] = useState({
+    page: initialPage,
+    limit: initialLimit,
+    search: "",
+    status: "all" as OrderFilters["status"],
   });
-
-
-  const { mutateAsync: deleteOrder } = useMutation({
-    mutationFn: apiDeleteOrder,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ordersKeys.all });
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ordersKeys.list(params),
+    queryFn: ({ signal }) => getOrders(params, signal),
+  });
+  const deletion = useMutation({
+    mutationFn: deleteOrder,
+    onSuccess: async () => {
+      const lastPage = Math.max(1, Math.ceil(((query.data?.total ?? 1) - 1) / params.limit));
+      setParams((current) => ({ ...current, page: Math.min(current.page, lastPage) }));
+      await queryClient.invalidateQueries({ queryKey: ordersKeys.all });
     },
   });
 
   return {
-    orders: data?.data ?? [],
-    total: data?.total ?? 0,
-    page,
-    limit,
-    isLoading,
-    isError,
-    setPage,
-    setLimit,
-    refetch,
-    deleteOrder,
-  }
+    ...params,
+    orders: query.data?.data ?? [],
+    total: query.data?.total ?? 0,
+    isLoading: query.isPending,
+    isFetching: query.isFetching,
+    isError: query.isError,
+    refetch: query.refetch,
+    setPage: (page: number) => setParams((current) => ({ ...current, page })),
+    setLimit: (limit: number) => setParams((current) => ({ ...current, page: 1, limit })),
+    applyFilters: (filters: OrderFilters) => setParams((current) => ({ ...current, ...filters, page: 1 })),
+    deletion,
+  };
 }
-
-// How to use it
-// const { orders, page, setPage } = useOrders()
-// <DataTable columns={ordersColumns} data={orders} />

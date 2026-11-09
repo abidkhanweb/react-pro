@@ -1,23 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Order } from "../orders.types";
+import { formatOrderAmount } from "../orders.format";
 
-type Props = {
-  order: Order;
-};
-
-export function OrderDetails({ order }: Props) {
+export function OrderDetails({ order }: { order: Order }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Order Details</CardTitle>
-      </CardHeader>
-
-      <CardContent className="space-y-2">
-        <p>ID : {order.id}</p>
-        <p>Customer : {order.customerName}</p>
-        <p>Status : {order.status}</p>
-        <p>Amount : ₹{order.totalAmount}</p>
-      </CardContent>
-    </Card>
+    <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-3 text-sm">
+      <dt className="text-muted-foreground">Order ID</dt><dd className="break-all">{order.id}</dd>
+      <dt className="text-muted-foreground">Customer</dt><dd>{order.customerName}</dd>
+      <dt className="text-muted-foreground">Status</dt><dd className="capitalize">{order.status}</dd>
+      <dt className="text-muted-foreground">Amount</dt><dd>{formatOrderAmount(order.totalAmount)}</dd>
+      <dt className="text-muted-foreground">Created</dt>
+      <dd><time dateTime={order.createdAt}>{new Date(order.createdAt).toLocaleString("en-IN")}</time></dd>
+    </dl>
   );
 }
