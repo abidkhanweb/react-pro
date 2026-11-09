@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { dashboardKeys, ordersKeys } from "@/services/query-keys";
+import { analyticsKeys, dashboardKeys, ordersKeys } from "@/services/query-keys";
 import { getOrders, deleteOrder } from "../api";
 import type { OrderFilters } from "../orders.types";
 
@@ -24,6 +24,7 @@ export function useOrders(initialPage = 1, initialLimit = 10) {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ordersKeys.all }),
         queryClient.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+        queryClient.invalidateQueries({ queryKey: analyticsKeys.all }),
       ]);
     },
   });
