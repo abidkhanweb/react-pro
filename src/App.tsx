@@ -1,60 +1,21 @@
-import { Routes, Route } from "react-router-dom"
-import LazyComponentsRegistery from "@/components/system/LazyComponentsRegistery";
+import { Route, Routes } from "react-router-dom";
 import Layout from "@/components/featured/layout/Layout";
 import NotFound from "@/components/common/not-found/NotFound";
-import { MENU } from '@/utils/index'
-import dashboardLogo from '@/assets/img/icons/dashboard-logo.svg'
+import LazyComponentsRegistery from "@/components/system/LazyComponentsRegistery";
+import { MENU } from "@/utils/constant/routes";
 
 function App() {
   return (
-    <>
-      <img src={dashboardLogo} alt="Commerce Admin" width={100} />
-      <Routes>
-        {MENU.map((main) => (
-          <Route key={main.path} path={main.path} element={<Layout />}>
-            {main.children?.map((sub) => {
-              const Component = sub.component ? LazyComponentsRegistery[sub.component] : undefined;
-
-              return (
-                <Route
-                  key={sub?.path}
-                  path={sub?.path}
-                  element={Component ? <Component /> : <NotFound />}
-                />
-              );
-            })}
-          </Route>
-        ))}
-      </Routes>
-
-      {/* <button
-        className="btn border p-[10px] m-[10px] text-[30px]"
-        onClick={() => setTheme("light")}
-      >
-        Light
-      </button>
-      <button
-        className="btn border p-[10px] m-[10px] text-[30px]"
-        onClick={() => setTheme("dark")}
-      >
-        Dark
-      </button>
-      <button
-        className="btn border p-[10px] m-[10px] text-[30px]"
-        onClick={() => setTheme("system")}
-      >
-        System
-      </button> */}
-      <div>
-        {/* <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a> */}
-      </div>
-    </>
+    <Routes>
+      <Route element={<Layout />}>
+        {MENU.map(({ path, component }) => {
+          const Page = LazyComponentsRegistery[component];
+          return <Route key={path} path={path} element={<Page />} />;
+        })}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 }
 
-export default App
+export default App;
