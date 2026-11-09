@@ -13,7 +13,7 @@ function Dashboard() {
           <Card key={path}>
             <CardHeader className="flex-row items-center justify-between space-y-0">
               <Icon aria-hidden="true" className="h-6 w-6 text-primary" />
-              <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">{path === "/orders" ? "Create and list" : "Planned"}</span>
+              <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">{path === "/orders" || path === "/products" ? "Manage records" : "Planned"}</span>
             </CardHeader>
             <CardContent className="space-y-3">
               <h2 className="font-semibold">{label}</h2>
