@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { dashboardKeys, ordersKeys } from "@/services/query-keys";
+import { analyticsKeys, dashboardKeys, ordersKeys } from "@/services/query-keys";
 import { createOrder } from "../api";
 
 export function useCreateOrder() {
@@ -9,6 +9,7 @@ export function useCreateOrder() {
     onSuccess: () => Promise.all([
       queryClient.invalidateQueries({ queryKey: ordersKeys.all }),
       queryClient.invalidateQueries({ queryKey: dashboardKeys.stats() }),
+      queryClient.invalidateQueries({ queryKey: analyticsKeys.all }),
     ]),
   });
 }

@@ -7,6 +7,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App";
 import { MENU } from "@/utils/constant/routes";
 
+vi.mock("@/modules/analytics/components/AnalyticsReportView", () => ({
+  AnalyticsReportView: () => <p>Analytics reports are tested separately from the shell.</p>,
+}));
+
 vi.mock("@/modules/dashboard/components/DashboardOverview", () => ({
   DashboardOverview: () => <p>Dashboard data is tested separately from the shell.</p>,
 }));
