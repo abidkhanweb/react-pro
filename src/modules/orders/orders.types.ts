@@ -5,3 +5,15 @@ export type Order = {
   totalAmount: number;
   createdAt: string;
 };
+
+export type OrderFilters = {
+  search: string;
+  status: Order["status"] | "all";
+};
+
+export type OrderListParams = {
+  page: number;
+  limit: number;
+  search?: string;
+  status?: OrderFilters["status"];
+};

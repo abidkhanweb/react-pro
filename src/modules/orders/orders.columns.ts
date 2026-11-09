@@ -1,5 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Order } from "./orders.types";
+import { formatOrderAmount } from "./orders.format";
 
 export const ordersColumns: ColumnDef<Order>[] = [
   {
@@ -17,9 +18,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "totalAmount",
     header: "Amount",
-    cell: ({ row }) => new Intl.NumberFormat("en-IN", {
-      style: "currency", currency: "INR",
-    }).format(row.original.totalAmount),
+    cell: ({ row }) => formatOrderAmount(row.original.totalAmount),
   },
 ];
 

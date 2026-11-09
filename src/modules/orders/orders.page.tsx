@@ -5,7 +5,7 @@ import { OrdersTable } from "./components/OrdersTable";
 export default function OrdersPage() {
   return (
     <PageLayout title="Orders">
-      <p className="text-muted-foreground">Create an order and review your current order list.</p>
+      <p className="text-muted-foreground">Create, find, review, edit and delete orders.</p>
       {import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCKS === "true" && (
         <p role="status" className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-100">Demo mode: orders are simulated and are lost when the page reloads. This is not a persistent backend.</p>
       )}
