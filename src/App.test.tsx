@@ -6,6 +6,15 @@ import { ThemeProvider } from "next-themes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App";
 import { MENU } from "@/utils/constant/routes";
+import type { ReactNode } from "react";
+
+vi.mock("@/modules/auth/AuthProvider", async () => {
+  const { AuthContext } = await import("@/modules/auth/auth.context");
+  return { AuthProvider: ({ children }: { children: ReactNode }) => <AuthContext.Provider value={{
+    user: { id: "shell-admin", name: "Shell admin", email: "admin@example.com", role: "admin" },
+    status: "ready", signIn: vi.fn(), signOut: vi.fn(), retrySession: vi.fn(),
+  }}>{children}</AuthContext.Provider> };
+});
 
 vi.mock("@/modules/analytics/components/AnalyticsReportView", () => ({
   AnalyticsReportView: () => <p>Analytics reports are tested separately from the shell.</p>,

@@ -4,5 +4,6 @@ import { productsHandlers } from "./products.handlers";
 import { usersHandlers } from "./users.handlers";
 import { dashboardHandlers } from "./dashboard.handlers";
 import { analyticsHandlers } from "./analytics.handlers";
+import { authGuard, authHandlers } from "./auth.handlers";
 
-export const worker = setupWorker(...ordersHandlers, ...productsHandlers, ...usersHandlers, ...dashboardHandlers, ...analyticsHandlers);
+export const worker = setupWorker(...authHandlers, authGuard, ...ordersHandlers, ...productsHandlers, ...usersHandlers, ...dashboardHandlers, ...analyticsHandlers);

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { MENU } from "@/utils/constant/routes";
 import { AdminNavigation } from "./AdminNavigation";
+import { SessionMenu } from "@/modules/auth/SessionMenu";
 
 function Layout() {
   const { pathname } = useLocation();
@@ -69,6 +70,7 @@ function Layout() {
             <p className="text-xs text-muted-foreground">Commerce Admin</p>
             <p className="truncate text-sm font-semibold">{title}</p>
           </div>
+          <SessionMenu />
           <Button
             variant="outline"
             size="icon"

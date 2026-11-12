@@ -20,6 +20,7 @@ import { useUsers, useSaveUser } from "@/modules/users/hooks/useUsers";
 import { formatINR } from "@/utils/format";
 import Dashboard from "@/components/featured/dashboard/Dashboard";
 import { getDashboardStats } from "./dashboard.service";
+import { AuthContext } from "@/modules/auth/auth.context";
 
 // jsdom has no layout engine; supply dimensions while keeping the real chart renderers.
 vi.mock("recharts", async (importOriginal) => ({
@@ -47,7 +48,10 @@ afterEach(() => { cleanup(); client.clear(); server.resetHandlers(); });
 afterAll(() => { server.close(); apiClient.defaults.baseURL = originalBaseURL; });
 
 function wrapper({ children }: { children: ReactNode }) {
-  return <QueryClientProvider client={client}><MemoryRouter>{children}</MemoryRouter></QueryClientProvider>;
+  return <QueryClientProvider client={client}><AuthContext.Provider value={{
+    user: { id: "dashboard-admin", name: "Admin", email: "admin@example.com", role: "admin" },
+    status: "ready", signIn: vi.fn(), signOut: vi.fn(), retrySession: vi.fn(),
+  }}><MemoryRouter>{children}</MemoryRouter></AuthContext.Provider></QueryClientProvider>;
 }
 function renderPage() { return render(<Dashboard />, { wrapper }); }
 function seed() {

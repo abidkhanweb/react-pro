@@ -14,6 +14,7 @@ type FormInputProps<T extends FieldValues> = {
   className?: string;
   min?: number;
   step?: number | string;
+  autoComplete?: string;
 };
 
 export function FormInput<T extends FieldValues>({
@@ -27,6 +28,7 @@ export function FormInput<T extends FieldValues>({
   className,
   min,
   step,
+  autoComplete,
 }: FormInputProps<T>) {
   return (
     <FormFieldWrapper<T>
@@ -46,6 +48,7 @@ export function FormInput<T extends FieldValues>({
             required={required}
             min={min}
             step={step}
+            autoComplete={autoComplete}
           />
         </FormControl>
       )}

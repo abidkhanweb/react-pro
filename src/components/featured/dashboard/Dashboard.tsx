@@ -4,8 +4,11 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { MENU } from "@/utils/constant/routes";
 import { DashboardOverview } from "@/modules/dashboard/components/DashboardOverview";
+import { useAuth } from "@/modules/auth/auth.context";
+import { canAccessPage } from "@/modules/auth/auth.permissions";
 
 function Dashboard() {
+  const { user } = useAuth();
   return (
     <PageLayout title="Dashboard">
       <p className="max-w-2xl text-muted-foreground">Your store overview: orders, catalog stock and user profiles.</p>
@@ -15,7 +18,7 @@ function Dashboard() {
       <DashboardOverview />
       <h2 className="text-lg font-semibold">Quick navigation</h2>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {MENU.filter(({ path }) => path !== "/").map(({ label, path, description, icon: Icon }) => (
+        {MENU.filter(({ path }) => path !== "/" && user && canAccessPage(user.role, path)).map(({ label, path, description, icon: Icon }) => (
           <Card key={path}>
             <CardHeader className="flex-row items-center justify-between space-y-0">
               <Icon aria-hidden="true" className="h-6 w-6 text-primary" />
