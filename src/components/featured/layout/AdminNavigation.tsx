@@ -2,11 +2,14 @@ import { NavLink } from "react-router-dom";
 import { DialogClose } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { MENU } from "@/utils/constant/routes";
+import { useAuth } from "@/modules/auth/auth.context";
+import { canAccessPage } from "@/modules/auth/auth.permissions";
 
 export function AdminNavigation({ mobile = false }: { mobile?: boolean }) {
+  const { user } = useAuth();
   return (
     <nav aria-label={mobile ? "Mobile navigation" : "Main navigation"} className="space-y-1 p-3">
-      {MENU.map(({ path, label, icon: Icon }) => {
+      {MENU.filter(({ path }) => user && canAccessPage(user.role, path)).map(({ path, label, icon: Icon }) => {
         const link = (
           <NavLink
             to={path}

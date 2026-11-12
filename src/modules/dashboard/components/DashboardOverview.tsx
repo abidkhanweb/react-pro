@@ -6,8 +6,11 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatINR } from "@/utils/format";
 import { useDashboard } from "../hooks/useDashboard";
+import { useAuth } from "@/modules/auth/auth.context";
+import { canAccessPage } from "@/modules/auth/auth.permissions";
 
 export function DashboardOverview() {
+  const { user } = useAuth();
   const { stats, isLoading, isFetching, isError, refetch } = useDashboard();
   if (isLoading) return <div role="status" aria-label="Loading dashboard"><SkeletonChartComponent /></div>;
   if (!stats) return <div role="alert">Could not load dashboard. <Button onClick={() => void refetch()}>Retry</Button></div>;
@@ -70,7 +73,7 @@ export function DashboardOverview() {
                 </TableRow>)}
               </TableBody></Table>
             )}
-            <Link className="mt-4 inline-block rounded text-sm underline focus-visible:ring-2 focus-visible:ring-ring" to="/orders">Manage orders</Link>
+            {user && canAccessPage(user.role, "/orders") && <Link className="mt-4 inline-block rounded text-sm underline focus-visible:ring-2 focus-visible:ring-ring" to="/orders">Manage orders</Link>}
           </CardContent>
         </Card>
         <Card className="min-w-0"><CardHeader><h2 className="font-semibold">Low-stock products</h2><p className="text-sm text-muted-foreground">{stats.totals.lowStock} products with 5 or fewer units, including out of stock. Showing up to five, lowest stock first.</p></CardHeader>
@@ -82,7 +85,7 @@ export function DashboardOverview() {
                 </TableRow>)}</TableBody>
               </Table>
             )}
-            <Link className="mt-4 inline-block rounded text-sm underline focus-visible:ring-2 focus-visible:ring-ring" to="/products">Manage products</Link>
+            {user && canAccessPage(user.role, "/products") && <Link className="mt-4 inline-block rounded text-sm underline focus-visible:ring-2 focus-visible:ring-ring" to="/products">Manage products</Link>}
           </CardContent>
         </Card>
       </div>
