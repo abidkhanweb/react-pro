@@ -1,5 +1,5 @@
 import { apiClient, ApiError } from "@/services/api";
-import { loginSchema, sessionSchema, type LoginValues } from "./auth.schema";
+import { loginSchema, profileSchema, sessionSchema, type LoginValues, type ProfileValues } from "./auth.schema";
 
 export async function getSession(signal?: AbortSignal) {
   try {
@@ -17,4 +17,10 @@ export async function login(values: LoginValues) {
 export async function logout() {
   try { await apiClient.post("/auth/logout"); }
   catch (error) { if (!(error instanceof ApiError && error.statusCode === 401)) throw error; }
+}
+
+export async function updateProfile(values: ProfileValues) {
+  const response = await apiClient.put<unknown>("/auth/profile", profileSchema.parse(values));
+  const user = sessionSchema.parse(response.data).user;
+  return { ...user, ...profileSchema.parse({ name: user.name }) };
 }

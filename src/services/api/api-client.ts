@@ -20,7 +20,7 @@ apiClient.interceptors.request.use((config) => {
 });
 apiClient.interceptors.response.use((response) => response, (error) => {
   if (axios.isAxiosError(error) && error.response?.status === 401 && error.config &&
-    !error.config.url?.startsWith("/auth/") && requestSessions.get(error.config) === sessionRevision && typeof window !== "undefined") {
+    !["/auth/session", "/auth/login", "/auth/logout"].includes(error.config.url ?? "") && requestSessions.get(error.config) === sessionRevision && typeof window !== "undefined") {
     window.dispatchEvent(new Event("auth:expired"));
   }
   return Promise.reject(normalizeApiError(error));

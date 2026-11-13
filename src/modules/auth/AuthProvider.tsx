@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useQueryClient } from "@tanstack/react-query";
 import { advanceAuthSession } from "@/services/api/api-client";
 import { AuthContext } from "./auth.context";
-import { getSession, login, logout } from "./auth.service";
-import type { LoginValues, SessionUser } from "./auth.schema";
+import { getSession, login, logout, updateProfile } from "./auth.service";
+import type { LoginValues, ProfileValues, SessionUser } from "./auth.schema";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const client = useQueryClient();
@@ -47,7 +47,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (version !== revision.current.version) return;
     clearPrivateData(); setUser(null); setStatus("ready");
   }
-  return <AuthContext.Provider value={{ user, status, signIn, signOut, retrySession: () => {
+  async function saveProfile(values: ProfileValues) {
+    if (!user) throw new Error("Sign in before updating your profile.");
+    const version = revision.current.version;
+    const saved = await updateProfile(values);
+    if (version !== revision.current.version) throw new Error("Session changed. Reload your profile before saving again.");
+    if (saved.id !== user.id || saved.role !== user.role || saved.email !== user.email) {
+      throw new Error("The profile response changed protected account fields.");
+    }
+    setUser({ ...user, name: saved.name });
+    return saved;
+  }
+  return <AuthContext.Provider value={{ user, status, signIn, signOut, saveProfile, retrySession: () => {
     setStatus("loading"); restoreSession();
   } }}>{children}</AuthContext.Provider>;
 }
