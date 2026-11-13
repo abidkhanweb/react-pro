@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { LoginValues, SessionUser } from "./auth.schema";
+import type { LoginValues, ProfileValues, SessionUser } from "./auth.schema";
 
 type AuthContextValue = {
   user: SessionUser | null;
@@ -7,6 +7,7 @@ type AuthContextValue = {
   signIn: (values: LoginValues) => Promise<SessionUser>;
   signOut: () => Promise<void>;
   retrySession: () => void;
+  saveProfile: (values: ProfileValues) => Promise<SessionUser>;
 };
 export const AuthContext = createContext<AuthContextValue | null>(null);
 export function useAuth() {

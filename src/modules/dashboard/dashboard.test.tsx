@@ -50,7 +50,7 @@ afterAll(() => { server.close(); apiClient.defaults.baseURL = originalBaseURL; }
 function wrapper({ children }: { children: ReactNode }) {
   return <QueryClientProvider client={client}><AuthContext.Provider value={{
     user: { id: "dashboard-admin", name: "Admin", email: "admin@example.com", role: "admin" },
-    status: "ready", signIn: vi.fn(), signOut: vi.fn(), retrySession: vi.fn(),
+    status: "ready", signIn: vi.fn(), signOut: vi.fn(), retrySession: vi.fn(), saveProfile: vi.fn(),
   }}><MemoryRouter>{children}</MemoryRouter></AuthContext.Provider></QueryClientProvider>;
 }
 function renderPage() { return render(<Dashboard />, { wrapper }); }

@@ -7,7 +7,7 @@ export function SessionMenu() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   return <div className="flex flex-wrap items-center gap-2">
-    <span className="hidden text-right text-xs sm:block">{user?.name}<span className="block capitalize text-muted-foreground">{user?.role}</span></span>
+    <span className="hidden max-w-40 text-right text-xs sm:block"><span className="block truncate">{user?.name}</span><span className="block capitalize text-muted-foreground">{user?.role}</span></span>
     <Button variant="outline" disabled={pending} onClick={async () => {
       setPending(true); setError("");
       try { await signOut(); }
